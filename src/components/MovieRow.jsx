@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import noImg from "../assets/images/No_image_available.svg.png";
+
 
 export default function MovieRow({ title, fetchFunc }) {
   const [movies, setMovies] = useState([]);

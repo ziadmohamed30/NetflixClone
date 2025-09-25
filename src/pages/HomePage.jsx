@@ -1,8 +1,8 @@
+import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
 import {
   getByGenre,
   getNowPlaying,
-  getPopularTV,
   getTrending,
   getUpcoming,
 } from "../store/api";
@@ -10,7 +10,7 @@ import {
 export default function HomePage() {
   return (
     <div className="p-4 flex flex-col gap-5">
-      <h1 className="text-3xl font-bold mb-6 text-center">Netflix Clone</h1>
+      <Banner />
       <MovieRow title={"Trending Now"} fetchFunc={getTrending} />
       <MovieRow title={"Now Playing in Theaters"} fetchFunc={getNowPlaying} />
       <MovieRow title={"Upcoming"} fetchFunc={getUpcoming} />
