@@ -68,9 +68,9 @@ export default function Banner() {
 
         <div className="flex gap-4">
           {/* ▶ Play Button */}
-          <button
+          <button 
             onClick={() => setShowTrailer(true)}
-            className="bg-white text-black px-4 py-2 rounded font-bold hover:bg-gray-200 transition"
+            className="btn btn-success cursor-pointer text-black px-4 py-2 rounded font-bold hover:bg-green transition"
           >
             ▶ Play
           </button>
@@ -102,7 +102,7 @@ export default function Banner() {
           {/* ℹ More Info Button */}
           <button
             onClick={() => setShowInfo(true)}
-            className="bg-gray-700 cursor-pointer px-4 py-2 rounded font-bold hover:bg-gray-600 transition"
+            className="btn btn-soft cursor-pointer px-4 py-2 rounded font-bold hover:bg-gray-600 transition"
           >
             ℹ More Info
           </button>
@@ -153,7 +153,7 @@ export default function Banner() {
                         <div
                           onClick={() => loadMovieDetails(el.id)}
                           key={el.id}
-                          className="min-w-[150px]"
+                          className="min-w-[150px] cursor-pointer"
                         >
                           <img
                             src={`https://image.tmdb.org/t/p/w200${el.poster_path}`}

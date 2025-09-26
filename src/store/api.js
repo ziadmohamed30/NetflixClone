@@ -15,3 +15,5 @@ export const getUpcoming = () => tmdb.get(`/movie/upcoming?api_key=${API_KEY}`);
 export const getNowPlaying = () =>
   tmdb.get(`/movie/now_playing?api_key=${API_KEY}`);
 export const getPopularTV = () => tmdb.get(`/tv/popular?api_key=${API_KEY}`);
+export const searchMovies = (query) =>
+  tmdb.get(`/search/movie?api_key=${API_KEY}&query=${query}`);

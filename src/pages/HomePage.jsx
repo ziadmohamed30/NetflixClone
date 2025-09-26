@@ -1,5 +1,6 @@
 import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
+import SearchBar from "../components/SearchBar";
 import {
   getByGenre,
   getNowPlaying,
@@ -10,6 +11,7 @@ import {
 export default function HomePage() {
   return (
     <div className="p-4 flex flex-col gap-5">
+      <SearchBar/>
       <Banner />
       <MovieRow title={"Trending Now"} fetchFunc={getTrending} />
       <MovieRow title={"Now Playing in Theaters"} fetchFunc={getNowPlaying} />
