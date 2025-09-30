@@ -2,10 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MovieRow from "./components/MovieRow";
 import HomePage from "./pages/HomePage";
 import MovieDetails from "./pages/MovieDetails";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
-    <div>
+    <div className="bg-gray-900">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -13,6 +14,7 @@ export default function App() {
           <Route path="/movie/:id" element={<MovieDetails />} />
         </Routes>
       </BrowserRouter>
+      <Footer/>
     </div>
   );
 }
