@@ -132,7 +132,7 @@ export default function Banner() {
           {/* ℹ More Info Button */}
           <button
             onClick={() => setShowInfo(true)}
-            className="btn btn-soft cursor-pointer px-4 py-2 rounded font-bold hover:bg-gray-600 transition"
+            className="text-white btn bg-black btn-soft border-b-neutral-950 cursor-pointer px-4 py-2 rounded font-bold hover:transition"
           >
             ℹ More Info
           </button>
