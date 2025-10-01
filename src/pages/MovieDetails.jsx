@@ -8,25 +8,32 @@ export default function MovieDetails() {
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [similar, setSimilar] = useState([]);
+  const [closeModal, setCloseModal] = useState(false);
 
   useEffect(() => {
-    async function fetchMovie() {
-      try {
-        const res = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=videos`
-        );
-        setMovie(res.data);
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=videos`
+      )
+      .then((res) => setMovie(res.data))
+      .catch((err) => console.error("Error fetching movie:", err));
 
-        const similarRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}`
-        );
-        setSimilar(similarRes.data.results);
-      } catch (err) {
-        console.error("Error fetching movie:", err);
-      }
-    }
-    fetchMovie();
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}`
+      )
+      .then((res) => setSimilar(res.data.results))
+      .catch((err) => console.error("Error fetching similar movies:", err));
   }, [id]);
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+       navigate('/');
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
 
   if (!movie) return <p className="p-8 text-white">Loading...</p>;
 
@@ -57,7 +64,9 @@ export default function MovieDetails() {
             className="w-full md:w-72 rounded-lg shadow-lg"
           />
           <div className="flex-1">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4">{movie.title}</h1>
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">
+              {movie.title}
+            </h1>
             <p className="mb-6 text-gray-300">{movie.overview}</p>
 
             <div className="space-y-2 text-gray-400">

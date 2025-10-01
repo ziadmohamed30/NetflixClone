@@ -10,7 +10,7 @@ export default function MovieRow({ title, fetchFunc }) {
 
   return (
     <div className="mb-6">
-      <h2 className="text-xl font-bold mb-2">{title}</h2>
+      <h2 className="text-xl text-white font-bold mb-2">{title}</h2>
       <div className="flex  overflow-x-scroll gap-4 pb-4">
         {movies.map((el) => (
           <Link to={`/movie/${el.id}`} key={el.id}>
