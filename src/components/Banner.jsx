@@ -5,7 +5,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Banner() {
-  const navigate = useNavigate();
+  const navigate= useNavigate();
   const { id } = useParams();
   const [banner, setBanner] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
