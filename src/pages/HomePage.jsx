@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
 import Navbar from "../components/NavBar";
+import useAuth from "../hooks/useAuth";
 
 import {
   getByGenre,
@@ -10,10 +12,14 @@ import {
 } from "../store/api";
 
 export default function HomePage() {
+  const { checkToken } = useAuth(
+    useEffect(() => {
+      checkToken();
+    }, [])
+  );
   return (
     <div className="p-4 flex flex-col gap-5 text-white">
-      
-      <Navbar/>
+      <Navbar />
       <Banner />
       <MovieRow title={"Trending Now"} fetchFunc={getTrending} />
       <MovieRow title={"Now Playing in Theaters"} fetchFunc={getNowPlaying} />

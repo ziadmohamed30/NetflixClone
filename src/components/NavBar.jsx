@@ -1,23 +1,40 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import SearchBar from "./SearchBar";
+import useAuth from "../hooks/useAuth";
 
 export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const searchRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const { logout } = useAuth();
 
   useEffect(() => {
-    if (!showSearch) return; // Only listen when modal is open
+    if (!showSearch) return;
 
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setShowSearch(false); // close modal
+        setShowSearch(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showSearch]);
+
+  useEffect(() => {
+    if (!showProfileDropdown) return;
+
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showProfileDropdown]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm px-8 py-4 flex items-center justify-between">
@@ -35,14 +52,43 @@ export default function Navbar() {
       </div>
 
       {/* Right side: search + profile */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 relative">
         {/* Search icon */}
-        <button onClick={() => setShowSearch(true)} className="text-white text-lg">
+        <button
+          onClick={() => setShowSearch(true)}
+          className="text-white text-lg cursor-pointer"
+        >
           🔍
         </button>
 
         {/* Avatar */}
-        <div className="w-8 h-8 rounded bg-gray-500"></div>
+        <div
+          className="w-8 h-8 rounded-full bg-gray-500 cursor-pointer"
+          onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+        ></div>
+
+        {/* Profile Dropdown */}
+        {showProfileDropdown && (
+          <div
+            ref={dropdownRef}
+            className="absolute right-0 mt-2 w-48 bg-black/90 text-white rounded shadow-lg z-50"
+            style={{ top: "100%" }} // dropdown appears directly below the avatar
+          >
+            <button className="block cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-700">
+              Profile 1
+            </button>
+            <button className="block cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-700">
+              Profile 2
+            </button>
+            <div className="border-t border-gray-700 my-1"></div>
+            <button
+              onClick={logout}
+              className="block w-full cursor-pointer text-left px-4 py-2 hover:bg-red-600 font-semibold"
+            >
+              Sign Out
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Search Modal */}
