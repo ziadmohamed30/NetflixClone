@@ -1,15 +1,15 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { domain } from "../store";
 import toast from "react-hot-toast";
-import useAuth from "../hooks/useAuth";
 import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import { supabase } from "../store/supabaseClient"; // your Supabase client
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { redirectIfLoggedIn } = useAuth();
+
   const RegisterSchema = Yup.object().shape({
     username: Yup.string().required("Username required"),
     email: Yup.string().email("Invalid email").required("Email required"),
@@ -18,26 +18,34 @@ export default function RegisterPage() {
       .required("Password required"),
   });
 
-  const handleRegister = (values) => {
-    axios
-      .post(domain + "/api/auth/local/register", {
+  const handleRegister = async (values) => {
+    try {
+      // Create user in Supabase
+      const { data, error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
-        username: values.username,
-      })
-      .then((res) => {
-        sessionStorage.setItem('token',res.data.jwt)
-        toast.success("Your account is ready to go");
-        navigate("/home");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.error.message);
-        console.log(err);
       });
+
+      if (error) throw error;
+
+      // Optionally, update user metadata with username
+      await supabase.auth.updateUser({
+        data: { username: values.username },
+      });
+
+      // Store session in sessionStorage by default
+      sessionStorage.setItem("supabaseSession", JSON.stringify(data.session));
+
+      toast.success("Your account is ready to go");
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message || "Registration failed");
+    }
   };
-  useEffect(() => {
-    redirectIfLoggedIn();
-  }, []);
+
+  
+
   return (
     <div
       className="relative flex flex-col min-h-screen bg-black text-white bg-cover bg-center"

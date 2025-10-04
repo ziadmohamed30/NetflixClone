@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import SearchBar from "./SearchBar";
 import useAuth from "../hooks/useAuth";
+import { supabase } from "../store/supabaseClient";
 
 export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false);
@@ -9,6 +10,7 @@ export default function Navbar() {
   const searchRef = useRef(null);
   const dropdownRef = useRef(null);
   const { logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!showSearch) return;
@@ -35,6 +37,22 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showProfileDropdown]);
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.log("Error signing out:", error.message);
+      return;
+    }
+
+    // Remove session from localStorage/sessionStorage
+    localStorage.removeItem("supabaseSession");
+    sessionStorage.removeItem("supabaseSession");
+
+    // Redirect to login
+    navigate('/');
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm px-8 py-4 flex items-center justify-between">
@@ -82,7 +100,7 @@ export default function Navbar() {
             </button>
             <div className="border-t border-gray-700 my-1"></div>
             <button
-              onClick={logout}
+              onClick={handleSignOut}
               className="block w-full cursor-pointer text-left px-4 py-2 hover:bg-red-600 font-semibold"
             >
               Sign Out

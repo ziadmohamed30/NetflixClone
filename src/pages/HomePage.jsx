@@ -12,11 +12,7 @@ import {
 } from "../store/api";
 
 export default function HomePage() {
-  const { checkToken } = useAuth(
-    useEffect(() => {
-      checkToken();
-    }, [])
-  );
+ 
   return (
     <div className="p-4 flex flex-col gap-5 text-white">
       <Navbar />
