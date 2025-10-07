@@ -1,29 +1,45 @@
-import { useEffect } from "react";
 import Banner from "../components/Banner";
-import MovieRow from "../components/MovieRow";
+import MediaRow from "../components/MediaRow";
 import Navbar from "../components/NavBar";
-import useAuth from "../hooks/useAuth";
 
 import {
   getByGenre,
   getNowPlaying,
+  getPopularTV,
   getTrending,
   getUpcoming,
 } from "../store/api";
 
 export default function HomePage() {
- 
   return (
     <div className="p-4 flex flex-col gap-5 text-white">
       <Navbar />
       <Banner />
-      <MovieRow title={"Trending Now"} fetchFunc={getTrending} />
-      <MovieRow title={"Now Playing in Theaters"} fetchFunc={getNowPlaying} />
-      <MovieRow title={"Upcoming"} fetchFunc={getUpcoming} />
 
-      <MovieRow title={"Action"} fetchFunc={() => getByGenre(28)} />
-      <MovieRow title={"Documentary"} fetchFunc={() => getByGenre(99)} />
-      <MovieRow title={"War"} fetchFunc={() => getByGenre(10752)} />
+      <MediaRow title={"Trending Now"} fetchFunc={getTrending} type={"movie"} />
+      <MediaRow title={"Popular TV"} fetchFunc={getPopularTV} type={"tv"} />
+      <MediaRow
+        title={"Now Playing in Theaters"}
+        fetchFunc={getNowPlaying}
+        type={"movie"}
+      />
+      <MediaRow title={"Upcoming"} fetchFunc={getUpcoming} type={"movie"} />
+
+      <MediaRow
+        title={"Action"}
+        fetchFunc={() => getByGenre(28)}
+        type={"movie"}
+      />
+      <MediaRow
+        title={"Documentary"}
+        fetchFunc={() => getByGenre(99)}
+        type={"movie"}
+      />
+      <MediaRow
+        title={"War"}
+        fetchFunc={() => getByGenre(10752)}
+        type={"movie"}
+      />
     </div>
   );
 }

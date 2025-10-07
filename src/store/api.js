@@ -6,14 +6,45 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const tmdb = axios.create({
   baseURL: BASE_URL,
 });
+
+// 🎬 MOVIES
 export const getTrending = () =>
   tmdb.get(`/trending/movie/week?api_key=${API_KEY}`);
 
 export const getByGenre = (genreId) =>
   tmdb.get(`/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`);
-export const getUpcoming = () => tmdb.get(`/movie/upcoming?api_key=${API_KEY}`);
+
+export const getUpcoming = () =>
+  tmdb.get(`/movie/upcoming?api_key=${API_KEY}`);
+
 export const getNowPlaying = () =>
   tmdb.get(`/movie/now_playing?api_key=${API_KEY}`);
-export const getPopularTV = () => tmdb.get(`/tv/popular?api_key=${API_KEY}`);
+
+export const getMovieDetails = (id) =>
+  tmdb.get(`/movie/${id}?api_key=${API_KEY}&append_to_response=videos`);
+
 export const searchMovies = (query) =>
   tmdb.get(`/search/movie?api_key=${API_KEY}&query=${query}`);
+
+// 📺 TV SHOWS
+export const getPopularTV = () =>
+  tmdb.get(`/tv/popular?api_key=${API_KEY}`);
+
+export const getTrendingTV = () =>
+  tmdb.get(`/trending/tv/week?api_key=${API_KEY}`);
+
+export const getTVByGenre = (genreId) =>
+  tmdb.get(`/discover/tv?api_key=${API_KEY}&with_genres=${genreId}`);
+
+export const getAiringToday = () =>
+  tmdb.get(`/tv/airing_today?api_key=${API_KEY}`);
+
+export const getOnTheAir = () =>
+  tmdb.get(`/tv/on_the_air?api_key=${API_KEY}`);
+
+export const getTVDetails = (id) =>
+  tmdb.get(`/tv/${id}?api_key=${API_KEY}&append_to_response=videos`);
+
+export const searchTV = (query) =>
+  tmdb.get(`/search/tv?api_key=${API_KEY}&query=${query}`);
+
