@@ -1,16 +1,29 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { supabase } from "../store/supabaseClient";
 
-// Checks if a user session exists in localStorage or sessionStorage
 export default function ProtectedRoute({ children }) {
-  const session =
-    JSON.parse(localStorage.getItem("supabaseSession")) ||
-    JSON.parse(sessionStorage.getItem("supabaseSession"));
+  const [authenticated, setAuthenticated] = useState(null);
 
-  if (!session || !session.user) {
-    // If no session, redirect to login
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (!error && data?.session) {
+        setAuthenticated(true);
+      } else {
+        setAuthenticated(false);
+      }
+    })();
+  }, []);
+
+  if (authenticated === null) {
+    // Optional: could show nothing instead of loading text
+    return null;
+  }
+
+  if (!authenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // If session exists, render the protected page
-  return children;
+  return <>{children}</>;
 }

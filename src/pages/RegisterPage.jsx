@@ -2,13 +2,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
-import useAuth from "../hooks/useAuth";
 import { supabase } from "../store/supabaseClient"; // your Supabase client
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { redirectIfLoggedIn } = useAuth();
 
   const RegisterSchema = Yup.object().shape({
     username: Yup.string().required("Username required"),
@@ -43,8 +40,6 @@ export default function RegisterPage() {
       toast.error(err.message || "Registration failed");
     }
   };
-
-  
 
   return (
     <div

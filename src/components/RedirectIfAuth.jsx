@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../store/supabaseClient";
 
@@ -6,18 +6,17 @@ export default function RedirectIfAuth({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkSession = async () => {
-      const session =
-        JSON.parse(localStorage.getItem("supabaseSession")) ||
-        JSON.parse(sessionStorage.getItem("supabaseSession"));
+    // ✅ Immediately invoked async function
+    (async () => {
+      const { data, error } = await supabase.auth.getSession();
 
-      if (session) {
-        navigate("/home"); // redirect if already logged in
+      // If a valid session exists → redirect to /home
+      if (!error && data?.session) {
+        navigate("/home");
       }
-    };
-
-    checkSession();
+    })();
   }, [navigate]);
 
+  // ✅ Otherwise, show the normal children (like login or signup page)
   return <>{children}</>;
 }

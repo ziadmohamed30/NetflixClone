@@ -24,7 +24,7 @@ export default function LoginPage() {
     setSubmitting(false);
 
     if (error) {
-      toast.error(error.message || "Invalid Email or Password");
+      toast.error("Invalid Email or Password");
       return;
     }
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
       }
       navigate("/home"); // ProtectedRoute will verify access
     } else {
-      toast.error("Login failed: No session returned");
+      toast.error("Login failed");
     }
   };
 
