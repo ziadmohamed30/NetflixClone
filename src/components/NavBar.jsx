@@ -1,15 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import SearchBar from "./SearchBar";
-import useAuth from "../hooks/useAuth";
 import { supabase } from "../store/supabaseClient";
 
 export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showMobileLinks, setShowMobileLinks] = useState(false);
   const searchRef = useRef(null);
   const dropdownRef = useRef(null);
-  const { logout } = useAuth();
+  const browseRef = useRef(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,13 +47,20 @@ export default function Navbar() {
       return;
     }
 
-    // Remove session from localStorage/sessionStorage
     localStorage.removeItem("supabaseSession");
     sessionStorage.removeItem("supabaseSession");
-
-    // Redirect to login
-    navigate('/');
+    navigate("/");
   };
+  useEffect(() => {
+    const handleClickOutsideTheBrowse = (e) => {
+      if (browseRef.current && !browseRef.current.contains(e.target)) {
+        setShowMobileLinks(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutsideTheBrowse);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutsideTheBrowse);
+  }, [showMobileLinks]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm px-8 py-4 flex items-center justify-between">
@@ -69,9 +77,36 @@ export default function Navbar() {
         <Link to="/my-list">My List</Link>
       </div>
 
+      {/* Mobile arrow toggle button and Mobile Links */}
+      <div ref={browseRef} className="md:hidden relative">
+        <button
+          className="text-white  ml-4 cursor-pointer "
+          onClick={() => setShowMobileLinks(!showMobileLinks)}
+        >
+          Browse ▼
+        </button>
+
+        {/* Mobile links */}
+        {showMobileLinks && (
+          <div className="absolute top-full left-0 mt-1 bg-black/90 text-white flex flex-col gap-2 p-4 rounded shadow-lg z-50 min-w-[150px]">
+            <Link to="/" onClick={() => setShowMobileLinks(false)}>
+              Home
+            </Link>
+            <Link to="/tv" onClick={() => setShowMobileLinks(false)}>
+              TV Shows
+            </Link>
+            <Link to="/movies" onClick={() => setShowMobileLinks(false)}>
+              Movies
+            </Link>
+            <Link to="/my-list" onClick={() => setShowMobileLinks(false)}>
+              My List
+            </Link>
+          </div>
+        )}
+      </div>
+
       {/* Right side: search + profile */}
       <div className="flex items-center gap-4 relative">
-        {/* Search icon */}
         <button
           onClick={() => setShowSearch(true)}
           className="text-white text-lg cursor-pointer"
@@ -79,18 +114,16 @@ export default function Navbar() {
           🔍
         </button>
 
-        {/* Avatar */}
         <div
           className="w-8 h-8 rounded-full bg-gray-500 cursor-pointer"
           onClick={() => setShowProfileDropdown(!showProfileDropdown)}
         ></div>
 
-        {/* Profile Dropdown */}
         {showProfileDropdown && (
           <div
             ref={dropdownRef}
             className="absolute right-0 mt-2 w-48 bg-black/90 text-white rounded shadow-lg z-50"
-            style={{ top: "100%" }} // dropdown appears directly below the avatar
+            style={{ top: "100%" }}
           >
             <button className="block cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-700">
               Profile 1

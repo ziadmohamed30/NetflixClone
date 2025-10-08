@@ -51,15 +51,12 @@ export default function MediaDetails() {
       {/* Close Button */}
       <button
         onClick={() => navigate("/")}
-        className="absolute cursor-pointer top-4 right-4 text-3xl text-white hover:text-red-500 transition"
+        className="absolute  cursor-pointer top-4 right-4 text-3xl text-white hover:text-red-500 transition"
       >
-        ✖
+        X
       </button>
 
-      <div
-        className="max-w-6xl mx-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="max-w-6xl mx-auto" onClick={(e) => e.stopPropagation()}>
         {/* Header Section */}
         <div className="flex flex-col md:flex-row gap-8 items-start">
           <img
@@ -70,7 +67,9 @@ export default function MediaDetails() {
             }
             alt={media.title || media.name}
             className="w-full md:w-72 rounded-lg shadow-lg"
+            style={{ maxHeight: "400px", objectFit: "contain" }}
           />
+
           <div className="flex-1">
             <h1 className="text-3xl md:text-5xl font-bold mb-4">
               {media.title || media.name}
@@ -103,7 +102,7 @@ export default function MediaDetails() {
         {/* Trailer Section */}
         <div className="mt-10">
           {trailer ? (
-            <div className="relative w-full pt-[56.25%] rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-full md:w-3/4 lg:w-2/3 mx-auto pt-[56.25%] md:pt-[40%] rounded-lg overflow-hidden shadow-lg">
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
                 src={`https://www.youtube.com/embed/${trailer.key}`}

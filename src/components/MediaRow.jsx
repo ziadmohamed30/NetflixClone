@@ -13,7 +13,7 @@ export default function MediaRow({ title, fetchFunc, type }) {
       <h2 className="text-xl text-white font-bold mb-2">{title}</h2>
       <div className="flex overflow-x-scroll gap-4 pb-4">
         {items.map((el) => (
-          <Link to={`/${type}/${el.id}`} key={el.id}>
+          <Link to={`/${el.media_type || type}/${el.id}`} key={el.id}>
             <div className="w-35">
               <img
                 src={
@@ -24,9 +24,9 @@ export default function MediaRow({ title, fetchFunc, type }) {
                 alt={el.title || el.name}
                 className="rounded-xl hover:scale-105 transition"
               />
-              <p className="text-sm text-gray-300 mt-2 text-center">
+              {/* <p className="text-sm text-gray-300 mt-2 text-center">
                 {el.title || el.name}
-              </p>
+              </p> */}
             </div>
           </Link>
         ))}

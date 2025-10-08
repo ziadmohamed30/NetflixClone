@@ -157,9 +157,9 @@ export default function Banner() {
                 >
                   <button
                     onClick={() => setShowInfo(false)}
-                    className="absolute top-2 right-2 text-white text-2xl"
+                    className="absolute top-2 right-2 cursor-pointer text-white text-2xl hover:text-red-500 transition"
                   >
-                    ✖
+                    X
                   </button>
 
                   {/* Poster + Details */}
