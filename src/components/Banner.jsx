@@ -1,32 +1,32 @@
 import { useEffect, useState } from "react";
-import { API_KEY, getTrending } from "../store/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { API_KEY } from "../store/api";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Banner() {
-  const navigate= useNavigate();
-  const { id } = useParams();
+export default function Banner({ fetchFunc, type }) {
   const [banner, setBanner] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const [trailerKey, setTrailerKey] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
   const [similar, setSimilar] = useState([]);
 
-  async function loadMovieDetails(movieId) {
+  async function loadDetails(id, mediaType) {
+    const finalType =
+      mediaType !== "all" ? mediaType : banner?.media_type || "movie";
     const res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`
+      `https://api.themoviedb.org/3/${finalType}/${id}?api_key=${API_KEY}&append_to_response=videos`
     );
-    setBanner(res.data);
+    const newBannerData = { ...res.data, media_type: finalType };
+    setBanner(newBannerData);
 
     const similarRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${API_KEY}`
+      `https://api.themoviedb.org/3/${finalType}/${id}/similar?api_key=${API_KEY}`
     );
     setSimilar(similarRes.data.results);
   }
 
   useEffect(() => {
-    getTrending().then((res) => {
+    fetchFunc().then((res) => {
       const results = res.data.results;
       setBanner(results[Math.floor(Math.random() * results.length)]);
     });
@@ -34,9 +34,10 @@ export default function Banner() {
 
   useEffect(() => {
     if (showTrailer && banner) {
+      const mediaType = banner.media_type;
       axios
         .get(
-          `https://api.themoviedb.org/3/movie/${banner.id}/videos?api_key=${API_KEY}`
+          `https://api.themoviedb.org/3/${mediaType}/${banner.id}/videos?api_key=${API_KEY}`
         )
         .then((res) => {
           const trailer = res.data.results.find((el) => el.type === "Trailer");
@@ -47,9 +48,10 @@ export default function Banner() {
 
   useEffect(() => {
     if (showInfo && banner) {
+      const mediaType = banner.media_type;
       axios
         .get(
-          `https://api.themoviedb.org/3/movie/${banner.id}/similar?api_key=${API_KEY}`
+          `https://api.themoviedb.org/3/${mediaType}/${banner.id}/similar?api_key=${API_KEY}`
         )
         .then((res) => setSimilar(res.data.results || []));
     }
@@ -67,6 +69,7 @@ export default function Banner() {
   }, []);
 
   if (!banner) return null;
+  const title = banner.title || banner.name;
 
   return (
     <div
@@ -78,7 +81,7 @@ export default function Banner() {
       <div className="bg-gradient-to-t from-black/80 absolute inset-0"></div>
 
       <div className="relative z-10 max-w-xl">
-        <h1 className="text-4xl font-bold mb-4">{banner.title}</h1>
+        <h1 className="text-4xl font-bold mb-4">{title}</h1>
 
         <div className="flex gap-4">
           {/* ▶ Play Button */}
@@ -166,15 +169,15 @@ export default function Banner() {
                   <div className="flex flex-col md:flex-row gap-6">
                     <img
                       src={`https://image.tmdb.org/t/p/w500${banner.poster_path}`}
-                      alt={banner.title}
-                      className="w-full md:w-48 rounded-lg shadow-lg"
+                      alt={title}
+                      className="w-full    md:w-48 rounded-lg shadow-lg"
                     />
                     <div className="flex-1">
                       <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                        {banner.title}
+                        {title}
                       </h2>
                       <p className="mb-4 text-sm md:text-base">
-                        {banner.overview}
+                        {banner.overview || "No description available."}
                       </p>
                       <p className="mb-2 text-sm md:text-base">
                         <strong>Release Date:</strong> {banner.release_date}
@@ -192,20 +195,24 @@ export default function Banner() {
                   {/* Similar Movies */}
                   {similar.length > 0 && (
                     <div className="mt-6">
-                      <h3 className="text-xl font-bold mb-3">Similar Movies</h3>
+                      <h3 className="text-xl font-bold mb-3">
+                        Similar{" "}
+                        {banner.media_type === "tv" ? "TV Shows" : "Movies"}
+                      </h3>
+
                       <div className="flex gap-4 overflow-x-auto pb-4">
                         {similar.map((el) => (
                           <div
-                            onClick={() => loadMovieDetails(el.id)}
+                            onClick={() => loadDetails(el.id, type)}
                             key={el.id}
                             className="min-w-[120px] md:min-w-[150px] cursor-pointer"
                           >
                             <img
                               src={`https://image.tmdb.org/t/p/w200${el.poster_path}`}
-                              alt={el.title}
-                              className="rounded-lg mb-2"
+                              alt={el.title || el.name}
+                              className="rounded-lg mb-2 hover:scale-105 transition"
                             />
-                            <p className="text-xs md:text-sm">{el.title}</p>
+                            <p>{el.title || el.name}</p>
                           </div>
                         ))}
                       </div>

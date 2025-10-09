@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import RedirectIfAuth from "./components/RedirectIfAuth";
 import MediaDetails from "./pages/MediaDetails";
 import MoviesPage from "./pages/MoviesPage";
+import TvShowsPage from "./pages/TvShowsPage";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           />
           {/* <Route path="/home" element={<HomePage />} /> */}
           <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/tv" element={<TvShowsPage />} />
           <Route path="/movie/:id" element={<MediaDetails />} />
           <Route path="/tv/:id" element={<MediaDetails />} />
           <Route

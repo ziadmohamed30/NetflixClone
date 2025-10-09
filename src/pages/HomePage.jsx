@@ -20,7 +20,7 @@ export default function HomePage() {
       <main className="pt-24 flex flex-col gap-12">
         {/* Banner full width */}
         <section className="w-full">
-          <Banner />
+          <Banner type={'all'} fetchFunc={getTrendingAll} />
         </section>
 
         {/* Media Rows with padding */}
