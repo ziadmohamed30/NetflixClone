@@ -7,9 +7,13 @@ const tmdb = axios.create({
   baseURL: BASE_URL,
 });
 
-// 🔥 Trending Movies + TV Shows
+// Movies + TV Shows
 export const getTrendingAll = () =>
   tmdb.get(`/trending/all/week?api_key=${API_KEY}`);
+export const searchAll = (query) =>
+  axios.get(
+    `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${query}`
+  );
 
 // 🎬 MOVIES
 export const getTrending = () =>
@@ -25,9 +29,6 @@ export const getNowPlaying = () =>
 
 export const getMovieDetails = (id) =>
   tmdb.get(`/movie/${id}?api_key=${API_KEY}&append_to_response=videos`);
-
-export const searchMovies = (query) =>
-  tmdb.get(`/search/movie?api_key=${API_KEY}&query=${query}`);
 
 // 📺 TV SHOWS
 export const getPopularTV = () => tmdb.get(`/tv/popular?api_key=${API_KEY}`);

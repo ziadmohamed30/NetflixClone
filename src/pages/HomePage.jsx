@@ -20,7 +20,7 @@ export default function HomePage() {
       <main className="pt-24 flex flex-col gap-12">
         {/* Banner full width */}
         <section className="w-full">
-          <Banner type={'all'} fetchFunc={getTrendingAll} />
+          <Banner type={"all"} fetchFunc={getTrendingAll} />
         </section>
 
         {/* Media Rows with padding */}
@@ -32,9 +32,17 @@ export default function HomePage() {
             fetchFunc={getNowPlaying}
             type="movie"
           />
-          <MediaRow title="Coming Soon to Theaters" fetchFunc={getUpcoming} type="movie" />
+          <MediaRow
+            title="Coming Soon to Theaters"
+            fetchFunc={getUpcoming}
+            type="movie"
+          />
 
-          <MediaRow title="Action" fetchFunc={() => getByGenre(28)} type="movie" />
+          <MediaRow
+            title="Action"
+            fetchFunc={() => getByGenre(28)}
+            type="movie"
+          />
           <MediaRow
             title="Documentary"
             fetchFunc={() => getByGenre(99)}

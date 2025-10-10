@@ -9,6 +9,7 @@ import RedirectIfAuth from "./components/RedirectIfAuth";
 import MediaDetails from "./pages/MediaDetails";
 import MoviesPage from "./pages/MoviesPage";
 import TvShowsPage from "./pages/TvShowsPage";
+import ErrorPage from "./pages/ErrorPage";
 
 export default function App() {
   return (
@@ -16,6 +17,13 @@ export default function App() {
       <Toaster position="top-center" reverseOrder={false} />
       <BrowserRouter>
         <Routes>
+          <Route path="/"
+            element={
+              <RedirectIfAuth>
+                <RegisterPage />
+              </RedirectIfAuth>
+            }
+          />
           <Route
             path="/login"
             element={
@@ -24,19 +32,7 @@ export default function App() {
               </RedirectIfAuth>
             }
           />
-          <Route
-            path="/"
-            element={
-              <RedirectIfAuth>
-                <RegisterPage />
-              </RedirectIfAuth>
-            }
-          />
-          {/* <Route path="/home" element={<HomePage />} /> */}
-          <Route path="/movies" element={<MoviesPage />} />
-          <Route path="/tv" element={<TvShowsPage />} />
-          <Route path="/movie/:id" element={<MediaDetails />} />
-          <Route path="/tv/:id" element={<MediaDetails />} />
+
           <Route
             path="/home"
             element={
@@ -45,6 +41,39 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/movies"
+            element={
+              <ProtectedRoute>
+                <MoviesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tv"
+            element={
+              <ProtectedRoute>
+                <TvShowsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/movie/:id"
+            element={
+              <ProtectedRoute>
+                <MediaDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tv/:id"
+            element={
+              <ProtectedRoute>
+                <MediaDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<ErrorPage/>}/>
         </Routes>
       </BrowserRouter>
       <Footer />
