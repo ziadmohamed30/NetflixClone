@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { API_KEY } from "../store/api";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-
+import noImg from "../assets/images/noImg.png";
 export default function Banner({ fetchFunc, type }) {
   const [banner, setBanner] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
@@ -168,7 +168,11 @@ export default function Banner({ fetchFunc, type }) {
                   {/* Poster + Details */}
                   <div className="flex flex-col md:flex-row gap-6">
                     <img
-                      src={`https://image.tmdb.org/t/p/w500${banner.poster_path}`}
+                      src={
+                        banner.poster_path
+                          ? `https://image.tmdb.org/t/p/w500${banner.poster_path}`
+                          : noImg
+                      }
                       alt={title}
                       className="w-full    md:w-48 rounded-lg shadow-lg"
                     />
@@ -208,7 +212,11 @@ export default function Banner({ fetchFunc, type }) {
                             className="min-w-[120px] md:min-w-[150px] cursor-pointer"
                           >
                             <img
-                              src={`https://image.tmdb.org/t/p/w200${el.poster_path}`}
+                              src={
+                                el.poster_path
+                                  ? `https://image.tmdb.org/t/p/w200${el.poster_path}`
+                                  : noImg
+                              }
                               alt={el.title || el.name}
                               className="rounded-lg mb-2 hover:scale-105 transition"
                             />

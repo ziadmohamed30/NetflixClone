@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function MediaRow({ title, fetchFunc, type }) {
+  const location = useLocation();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -13,7 +14,11 @@ export default function MediaRow({ title, fetchFunc, type }) {
       <h2 className="text-xl text-white font-bold mb-2">{title}</h2>
       <div className="flex overflow-x-scroll gap-4 pb-4">
         {items.map((el) => (
-          <Link to={`/${el.media_type || type}/${el.id}`} key={el.id}>
+          <Link
+            to={`/${el.media_type || type}/${el.id}`}
+            key={el.id}
+            state={{ background: location }}
+          >
             <div className="w-35">
               <img
                 src={

@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { searchAll } from "../store/api"; // updated to mixed search
-import { Link } from "react-router-dom";
-import noImg from "../assets/images/noImg.png"
+import { searchAll } from "../store/api";
+import { Link, useLocation } from "react-router-dom";
+import noImg from "../assets/images/noImg.png";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const containerRef = useRef(null);
+  const location = useLocation();
 
   // Debounced Search
   useEffect(() => {
-    if (query.trim().length<3) {
+    if (query.trim().length < 3) {
       setResults([]);
       return;
     }
@@ -70,6 +71,7 @@ export default function SearchBar() {
             return (
               <Link
                 to={`/${mediaType}/${item.id}`}
+                state={{ background: location }}
                 key={item.id}
                 onClick={() => setResults([])}
                 className="flex items-center gap-4 p-3 hover:bg-gray-800 transition"

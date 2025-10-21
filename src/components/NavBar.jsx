@@ -61,6 +61,15 @@ export default function Navbar() {
     return () =>
       document.removeEventListener("mousedown", handleClickOutsideTheBrowse);
   }, [showMobileLinks]);
+  useEffect(() => {
+    const handleEscSearchBar = (e) => {
+      if (e.key === "Escape") {
+        setShowSearch(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscSearchBar);
+    return () => document.removeEventListener("keydown", handleEscSearchBar);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm px-8 py-4 flex items-center justify-between">
