@@ -58,6 +58,22 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/movie/:id"
+          element={
+            <ProtectedRoute>
+              <MediaDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tv/:id"
+          element={
+            <ProtectedRoute>
+              <MediaDetails />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 
@@ -88,12 +104,13 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <div className="bg-gray-900">
-      <Toaster position="top-center" reverseOrder={false} />
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="bg-gray-900">
+        <Toaster position="top-center" reverseOrder={false} />
         <AppRoutes />
         <Footer />
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
+

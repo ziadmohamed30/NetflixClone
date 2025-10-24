@@ -151,7 +151,7 @@ export default function Banner({ fetchFunc, type }) {
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="bg-gray-900 text-white rounded-lg max-w-4xl w-full relative p-6"
+                  className="bg-[#2D2D2D] text-white rounded-lg max-w-4xl w-full relative p-6"
                   onClick={(e) => e.stopPropagation()}
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}

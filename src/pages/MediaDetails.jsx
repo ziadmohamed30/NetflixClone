@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { API_KEY } from "../store/api";
 import { motion, AnimatePresence } from "framer-motion";
 import noImg from "../assets/images/noImg.png";
@@ -69,7 +69,7 @@ export default function MediaDetails() {
           {/* Close Button */}
           <button
             onClick={handleClose}
-            className="absolute top-3 right-4 text-3xl text-gray-400 hover:text-red-500 focus:outline-none"
+            className="absolute cursor-pointer top-3 right-4 text-3xl text-gray-400 hover:text-red-500 focus:outline-none"
           >
             ×
           </button>
@@ -140,14 +140,10 @@ export default function MediaDetails() {
               </h3>
               <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
                 {similar.map((el) => (
-                  <div
+                  <Link
                     key={el.id}
-                    onClick={() =>
-                      navigate(`/${mediaType}/${el.id}`, {
-                        replace: true,
-                        state: { background: location.state?.background },
-                      })
-                    }
+                   state={{ background: location.state?.background }}
+                    to={`/${mediaType}/${el.id}`}
                     className="min-w-[90px] sm:min-w-[120px] md:min-w-[150px] cursor-pointer hover:scale-105 transition-transform duration-200"
                   >
                     <img
@@ -162,7 +158,7 @@ export default function MediaDetails() {
                     <p className="text-xs sm:text-sm text-center truncate">
                       {el.title || el.name}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
