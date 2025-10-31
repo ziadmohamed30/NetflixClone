@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import noImg from "../assets/images/noImg.png";
 
 export default function MediaRow({ title, fetchFunc, type }) {
   const location = useLocation();
@@ -24,7 +25,7 @@ export default function MediaRow({ title, fetchFunc, type }) {
                 src={
                   el.poster_path
                     ? `https://image.tmdb.org/t/p/w500${el.poster_path}`
-                    : "https://via.placeholder.com/300x450?text=No+Image"
+                    : noImg
                 }
                 alt={el.title || el.name}
                 className="rounded-xl hover:scale-105 transition"
